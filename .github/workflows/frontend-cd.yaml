@@ -142,11 +142,12 @@ jobs:
           AWS_REGION: ${{ vars.AWS_REGION }}
 
       - name: Build Docker image
+        working-directory: starter/frontend
         run: |
           docker build \
-            --build-arg REACT_APP_MOVIE_API_URL="$REACT_APP_MOVIE_API_URL" \
-            --tag ${{ vars.FRONTEND_ECR_REPO }}:${{ github.sha }} \
-            starter/frontend
+          --build-arg REACT_APP_MOVIE_API_URL="${{ env.REACT_APP_MOVIE_API_URL }}" \
+          --tag ${{ vars.ECR_FRONTEND_REPOSITORY }}:${{ github.sha }} \
+          .
 
       - name: Push Docker image to ECR
         run: |
